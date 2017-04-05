@@ -51,7 +51,8 @@ generate_new_password()
 find_an_account()
 {
 	read -p "What account do you want to find?" to_find
-	account=$(grep $to_find passwords.csv)
+	echo "SITE, USERNAME, PASSWORD"
+	grep $to_find passwords.csv
 }
 
 # MAIN
