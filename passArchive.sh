@@ -1,6 +1,7 @@
 #!/bin/bash
 
-menu() {
+menu() 
+{
     PS3='Choose what to do: '
     options=("Add an account" "Find an account" "Modify an account" "Delete an account" "Quit")
     select opt in "${options[@]}"
@@ -8,15 +9,23 @@ menu() {
 		case $opt in
 	    	"Add an account")
 				add_an_account
+				echo
+				menu
 				;;
 	    	"Find an account")
 				find_an_account
+				echo
+				menu
 				;;
 	    	"Modify an account")
 				modify_an_account
+				echo
+				menu
 				;;
 			"Delete an account")
 				delete_an_account
+				echo
+				menu
 				;;
 	    	"Quit")
 				break
@@ -35,7 +44,7 @@ add_an_account()
 	then
 		generate_new_password
 	else
-		read -sp "Enter your password: " password
+		read -sp "Enter your password (Hidden): " password
 	fi
 	
 	echo "$site,$name,$password" >> passwords.csv
@@ -51,9 +60,9 @@ generate_new_password()
 find_an_account()
 {
 	read -p "What account do you want to find?" to_find
-	grep $to_find passwords.csv >> find.csv 
-	awk -F "\"*,\"*" '{print $2 ": " $3}' find.csv
-	rm find.csv
+	grep $to_find passwords.csv >> found.csv 
+	awk -F "\"*,\"*" '{print "Username: "$2 " Password:" $3}' found.csv
+	rm found.csv
 	
 }
 
@@ -61,6 +70,12 @@ find_an_account()
 
 # MAIN
 
+if ! [[ -z $ENV_PAPATH ]]
+then
+	read -p "Where do you want to store your passwords?: " ENV_PAPATH
+	echo export "ENV_PAPATH=$ENV_PAPATH" >> $HOME/.bashrc
+fi
+cd $ENV_PAPATHS
 menu
 
 
