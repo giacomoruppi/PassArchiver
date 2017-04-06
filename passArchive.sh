@@ -70,6 +70,14 @@ find_an_account()
 
 # MAIN
 
+# Make sure user runs script as sudo
+if [[ $UID != 0 ]]; then
+    echo "Please run this script with sudo:"
+    echo "sudo $0 $*"
+    exit 1
+fi
+
+# Check if Passwords file's Env variable exists. If not, creates it.
 if ! [[ -z $ENV_PAPATH ]]
 then
 	read -p "Where do you want to store your passwords?: " ENV_PAPATH
